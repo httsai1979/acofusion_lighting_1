@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-Hant"> <head>
+<html lang="en"> <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ACOFUSION · 互動光層展示 (7 圖層版)</title> <style>
+<title>ACOFUSION · Interactive Lighting Layer Demo (7-Layer Version)</title> <style>
   :root{
     --ink:#222; --muted:#6b7280; --line:#e5e7eb; --bg:#f7f7f7; --card:#ffffff;
     --accent:#3b82f6; --accent-ink:#fff;
@@ -46,18 +46,18 @@
   .head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px}
   .grid{
     display:grid; gap:12px;
-    /* [Gemini Edit] 預設為 2 欄 (改善手機體驗) */
+    /* [Gemini Edit] Default to 2 columns (better mobile experience) */
     grid-template-columns:repeat(2,1fr);
   }
-  /* [Gemini Edit] 電腦版改為 3 欄 (佈局更均衡) */
+  /* [Gemini Edit] Desktop version to 3 columns (more balanced) */
   @media (min-width:900px){ .grid{grid-template-columns:repeat(3,1fr)} }
   .group{display:flex; flex-direction:column; gap:8px; background:#fff; padding:12px; border:1px solid var(--line); border-radius:12px}
   .group label{font-size:12px; color:var(--muted); display:flex; justify-content:space-between}
   .pill{font-size:12px; color:#111; padding:2px 8px; border-radius:999px; border:1px solid var(--line); background:#fafafa}
 
-  /* [Gemini Edit] 加高滑桿，方便觸控 */
+  /* [Gemini Edit] Taller sliders for easier touch */
   input[type=range]{-webkit-appearance:none; appearance:none; width:100%; height:14px; border-radius:999px; background:#eef2f7}
-  /* [Gemini Edit] 加大拖曳圓點，方便觸控 */
+  /* [Gemini Edit] Larger thumbs for easier touch */
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%; background:var(--accent); border:2px solid #fff; box-shadow:0 1px 0 #0001; cursor:pointer}
   input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%; background:var(--accent); border:2px solid #fff; cursor:pointer}
 
@@ -65,72 +65,70 @@
 </head>
 <body>
   <header>
-    <div class="brand"><div class="logo"></div><h1>ACOFUSION · 互動光層展示 (7 圖層版)</h1></div>
+    <div class="brand"><div class="logo"></div><h1>ACOFUSION · Interactive Lighting Layer Demo (7-Layer Version)</h1></div>
     <div class="toolbar">
-      <label class="sub">混合模式
+      <label class="sub">Blend Mode
         <select id="blend">
-          <option value="screen" selected>濾色 (Screen)</option>
-          <option value="normal">一般 (Normal)</option>
-          <option value="lighten">變亮 (Lighten)</option>
-          <option value="plus-lighter">加亮 (Plus Lighter)</option>
+          <option value="screen" selected>Screen</option>
+          <option value="normal">Normal</option>
+          <option value="lighten">Lighten</option>
+          <option value="plus-lighter">Plus Lighter</option>
         </select>
       </label>
-      <button class="btn" id="reset">重設 (Reset)</button>
+      <button class="btn" id="reset">Reset</button>
     </div>
   </header>
 
   <div class="stage-wrap" id="wrap">
     <div class="errorbar" id="err"></div>
-    <div class="loading" id="loading">載入影像中…</div>
+    <div class="loading" id="loading">Loading images…</div>
     <div class="stage">
-      <!-- 確保這些圖片檔與 .html 檔案在同一個資料夾 -->
-      <!-- [Gemini 修改] 在所有圖片 src 後面加上 ?v=2 來強制清除快取 -->
-      <img class="base"  id="img-base"      src="base.jpg?v=2" alt="基礎圖層"/>
-      <img class="layer" id="img-l01-accent"  src="L01_Accent.jpg?v=2"  alt="L01 - 植物聚光燈"/>
-      <img class="layer" id="img-l02-faint"   src="L02_Faint_Ambient.jpg?v=2" alt="L02 - 微弱環境光"/>
-      <img class="layer" id="img-l03-strip"   src="L03_Bar_Strip.jpg?v=2" alt="L03 - 吧台燈帶"/>
-      <img class="layer" id="img-l04-floor"   src="L04_Floor_Wash.jpg?v=2" alt="L04 - 右側地板燈"/>
-      <img class="layer" id="img-l05-back"    src="L05_Back_Room.jpg?v=2" alt="L05 - 後方置物架"/>
-      <img class="layer" id="img-l06-pendant" src="L06_Pendants.jpg?v=2" alt="L06 - 吧台吊燈"/>
-      <img class="layer" id="img-l07-wall"    src="L07_Main_Wall.jpg?v=2" alt="L07 - 左側主牆燈"/>
+      <!-- Ensure these image files are in the same folder as the .html file -->
+      <!-- [Gemini Edit] Added ?v=2 to all image src to force-clear cache -->
+      <img class="base"  id="img-base"      src="base.jpg?v=2" alt="Base Layer"/>
+      <img class="layer" id="img-l01-accent"  src="L01_Accent.jpg?v=2"  alt="L01 - Plant Spotlight"/>
+      <img class="layer" id="img-l02-faint"   src="L02_Faint_Ambient.jpg?v=2" alt="L02 - Faint Ambient"/>
+      <img class="layer" id="img-l03-strip"   src="L03_Bar_Strip.jpg?v=2" alt="L03 - Bar Strip Light"/>
+      <img class="layer" id="img-l04-floor"   src="L04_Floor_Wash.jpg?v=2" alt="L04 - Right Floor Wash"/>
+      <img class="layer" id="img-l05-back"    src="L05_Back_Room.jpg?v=2" alt="L05 - Back Room Shelves"/>
+      <img class="layer" id="img-l06-pendant" src="L06_Pendants.jpg?v=2" alt="L06 - Bar Pendants"/>
+      <img class="layer" id="img-l07-wall"    src="L07_Main_Wall.jpg?v=2" alt="L07 - Left Main Wall"/>
     </div>
   </div>
 
   <section class="panel">
     <div class="head">
-      <div class="sub">拖曳滑桿以混合光層。</div>
+      <div class="sub">Drag the sliders to blend the light layers.</div>
     </div>
     <div class="grid">
-      <!-- [Gemini 新增] 基礎亮度滑桿 -->
-      <div class="group"><label>L00 - 基礎亮度 <span class="pill" id="v-l00-base">100%</span></label>
-        <input type="range" id="s-l00-base" min="0" max="200" step="1" value="100"/></div>
+      <!-- [Gemini Edit] Removed L00 Base Brightness slider per request -->
 
-      <div class="group"><label>L01 - 植物聚光燈 <span class="pill" id="v-l01-accent">50%</span></label>
+      <div class="group"><label>L01 - Plant Spotlight <span class="pill" id="v-l01-accent">50%</span></label>
         <input type="range" id="s-l01-accent" min="0" max="100" step="1" value="50"/></div>
-      <div class="group"><label>L02 - 微弱環境光 <span class="pill" id="v-l02-faint">50%</span></label>
+      <div class="group"><label>L02 - Faint Ambient <span class="pill" id="v-l02-faint">50%</span></label>
         <input type="range" id="s-l02-faint"  min="0" max="100" step="1" value="50"/></div>
-      <div class="group"><label>L03 - 吧台燈帶 <span class="pill" id="v-l03-strip">50%</span></label>
+      <div class="group"><label>L03 - Bar Strip Light <span class="pill" id="v-l03-strip">50%</span></label>
         <input type="range" id="s-l03-strip"  min="0" max="100" step="1" value="50"/></div>
-      <div class="group"><label>L04 - 右側地板燈 <span class="pill" id="v-l04-floor">50%</span></label>
+      <div class="group"><label>L04 - Right Floor Wash <span class="pill" id="v-l04-floor">50%</span></label>
         <input type="range" id="s-l04-floor"  min="0" max="100" step="1" value="50"/></div>
-      <div class="group"><label>L05 - 後方置物架 <span class="pill" id="v-l05-back">50%</span></label>
+      <div class="group"><label>L05 - Back Room Shelves <span class="pill" id="v-l05-back">50%</span></label>
         <input type="range" id="s-l05-back"   min="0" max="100" step="1" value="50"/></div>
-      <div class="group"><label>L06 - 吧台吊燈 <span class="pill" id="v-l06-pendant">50%</span></label>
+      <div class="group"><label>L06 - Bar Pendants <span class="pill" id="v-l06-pendant">50%</span></label>
         <input type="range" id="s-l06-pendant" min="0" max="100" step="1" value="50"/></div>
-      <div class="group"><label>L07 - 左側主牆燈 <span class="pill" id="v-l07-wall">50%</span></label>
+      <div class="group"><label>L07 - Left Main Wall <span class="pill" id="v-l07-wall">50%</span></label>
         <input type="range" id="s-l07-wall"    min="0" max="100" step="1" value="50"/></div>
     </div>
     </section>
 
   <details class="align" style="width:min(1200px,96vw); padding: 10px;">
-    <summary>Alignment Lab (對位工具) — 手動調整位移/縮放 & DIFF 檢視</summary>
+    <summary>Alignment Lab — Manual offset/scale adjustment & DIFF View</summary>
     <div class="align-body" style="background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-top: 8px;">
       <label class="mini" style="display: flex; align-items: center; gap: 6px;">
-        <input type="checkbox" id="diff"> 啟用 DIFF 差異混合模式 (除錯用)
+        <input type="checkbox" id="diff"> Enable DIFF Mode (for debugging)
       </label>
       <div class="align-grid" id="alignGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 10px;"></div>
       <div class="sub" style="margin-top:6px; font-size: 12px;">
-        提示: 在 DIFF 模式下，邊緣若出現亮框代表未對齊；調整到畫面趨近「全黑」即為完美對齊。
+        Hint: In DIFF mode, bright edges mean misalignment. Adjust until the screen is almost "all black" for perfect alignment.
       </div>
     </div>
   </details>
@@ -140,7 +138,7 @@
   const $ = (s)=>document.querySelector(s);
   const wrap = $('#wrap'), err=$('#err'), loading=$('#loading');
 
-  // 定義 7 個圖層
+  // Define image elements
   const EL = {
     base:     $('#img-base'),
     l01:      $('#img-l01-accent'),
@@ -152,9 +150,8 @@
     l07:      $('#img-l07-wall')
   };
 
-  // 定義 8 個滑桿 (包含新的 L00)
+  // Define 7 sliders
   const sliders = {
-    l00:      $('#s-l00-base'),
     l01:      $('#s-l01-accent'),
     l02:      $('#s-l02-faint'),
     l03:      $('#s-l03-strip'),
@@ -164,9 +161,8 @@
     l07:      $('#s-l07-wall')
   };
   
-  // 定義 8 個數值標籤 (包含新的 L00)
+  // Define 7 value pills
   const pills = {
-    l00:      $('#v-l00-base'),
     l01:      $('#v-l01-accent'),
     l02:      $('#v-l02-faint'),
     l03:      $('#v-l03-strip'),
@@ -176,7 +172,7 @@
     l07:      $('#v-l07-wall')
   };
 
-  // [Gemini 修改] 在所有預載入檔案名稱後面加上 ?v=2
+  // [Gemini Edit] Add ?v=2 to all file names to bust cache
   const files=[
     'base.jpg?v=2',
     'L01_Accent.jpg?v=2',
@@ -195,19 +191,19 @@
     loading && loading.remove();
     const missing=arr.filter(x=>!x.ok).map(x=>x.src);
     let msg='';
-    if(missing.length) msg+='遺失檔案: '+missing.join(', ')+' . ';
+    if(missing.length) msg+='Missing files: '+missing.join(', ')+' . ';
     const ok=arr.filter(x=>x.ok);
     if(ok.length){
       const baseInfo = arr.find(x=>x.src.includes('base')) || ok[0];
       if (baseInfo && baseInfo.w && baseInfo.h){
-        // 確保影像容器有正確的長寬比
+        // Ensure the image container has the correct aspect ratio
         wrap.style.aspectRatio = baseInfo.w + ' / ' + baseInfo.h;
       }
       const w0=ok[0].w,h0=ok[0].h;
       const mismatch=ok.some(x=>x.w!==w0||x.h!==h0);
       
-      // [Gemini Edit] 暫時隱藏尺寸不符的錯誤，以便測試
-      // if(mismatch) msg+='影像尺寸不一致；請確保所有圖層像素相同。';
+      // [Gemini Edit] Temporarily hide mismatch error for testing
+      // if(mismatch) msg+='Image dimensions do not match. Please ensure all layers have the same pixel size.';
     }
     if(msg){ err.textContent=msg; err.style.display='block'; }
   });
@@ -218,16 +214,12 @@
   });
   $('#blend').dispatchEvent(new Event('change'));
 
-  // [Gemini 修改] 連結滑桿
-  // 設置圖層透明度 (Opacity)
+  // [Gemini Edit] Link sliders
+  // Set layer opacity
   const setOpacity = (el, s, pill)=>{ const v = Number(s.value)/100; el.style.opacity = v; pill.textContent = Math.round(v*100)+'%'; };
-  // 設置基礎亮度 (Brightness)
-  const setBrightness = (el, s, pill)=>{ const v = Number(s.value)/100; el.style.filter = `brightness(${v})`; pill.textContent = Math.round(v*100)+'%'; };
 
   ['input','change'].forEach(evt=>{
-    // 基礎亮度 (L00)
-    if (sliders.l00) sliders.l00.addEventListener(evt, ()=>setBrightness(EL.base,sliders.l00,pills.l00));
-    // 圖層透明度 (L01-L07)
+    // Layer Opacity (L01-L07)
     if (sliders.l01) sliders.l01.addEventListener(evt, ()=>setOpacity(EL.l01,sliders.l01,pills.l01));
     if (sliders.l02) sliders.l02.addEventListener(evt, ()=>setOpacity(EL.l02,sliders.l02,pills.l02));
     if (sliders.l03) sliders.l03.addEventListener(evt, ()=>setOpacity(EL.l03,sliders.l03,pills.l03));
@@ -237,31 +229,27 @@
     if (sliders.l07) sliders.l07.addEventListener(evt, ()=>setOpacity(EL.l07,sliders.l07,pills.l07));
   });
   
-  // 觸發一次，套用預設值
-  Object.values(sliders).forEach(s=> s && s.dispatchEvent(new Event('input'))); // 加上 s 檢查
+  // Trigger once to apply default values
+  Object.values(sliders).forEach(s=> s && s.dispatchEvent(new Event('input'))); // Add check for s
 
-  // [Gemini 修改] Reset 按鈕重設 8 個滑桿
+  // [Gemini Edit] Reset button now resets 7 sliders
   $('#reset').addEventListener('click', ()=>{
     Object.values(sliders).forEach(s => {
       if (!s) return;
-      if (s.id === 's-l00-base') {
-        s.value = 100; // 重設基礎亮度為 100
-      } else {
-        s.value = 50; // 重設其他圖層為 50
-      }
+      s.value = 50; // Reset all layers to 50
       s.dispatchEvent(new Event('input'));
     });
   });
 
-  /* Alignment Lab 對位工具支援 7 個圖層 */
+  /* Alignment Lab - support for 7 layers */
   const alignList = [
-    {id:'img-l01-accent', name:'L01 - 植物聚光燈'},
-    {id:'img-l02-faint', name:'L02 - 微弱環境光'},
-    {id:'img-l03-strip', name:'L03 - 吧台燈帶'},
-    {id:'img-l04-floor', name:'L04 - 右側地板燈'},
-    {id:'img-l05-back', name:'L05 - 後方置物架'},
-    {id:'img-l06-pendant', name:'L06 - 吧台吊燈'},
-    {id:'img-l07-wall', name:'L07 - 左側主牆燈'}
+    {id:'img-l01-accent', name:'L01 - Plant Spotlight'},
+    {id:'img-l02-faint', name:'L02 - Faint Ambient'},
+    {id:'img-l03-strip', name:'L03 - Bar Strip Light'},
+    {id:'img-l04-floor', name:'L04 - Right Floor Wash'},
+    {id:'img-l05-back', name:'L05 - Back Room Shelves'},
+    {id:'img-l06-pendant', name:'L06 - Bar Pendants'},
+    {id:'img-l07-wall', name:'L07 - Left Main Wall'}
   ];
   const host = document.getElementById('alignGrid');
   alignList.forEach(L=>{
@@ -272,9 +260,9 @@
     row.style.background = '#fcfcfc';
     row.innerHTML = `
       <div style="font-weight:600;margin-bottom:6px; font-size: 13px;">${L.name}</div>
-      <div class="mini" style="font-size:12px; color: #555;">X (左右) <input type="range" min="-80" max="80" value="0" step="1" data-k="x" data-id="${L.id}"></div>
-      <div class="mini" style="font-size:12px; color: #555;">Y (上下) <input type="range" min="-80" max="80" value="0" step="1" data-k="y" data-id="${L.id}"></div>
-      <div class="mini" style="font-size:12px; color: #555;">Scale (縮放) <input type="range" min="95" max="105" value="100" step="0.1" data-k="s" data-id="${L.id}"></div>
+      <div class="mini" style="font-size:12px; color: #555;">X (Horizontal) <input type="range" min="-80" max="80" value="0" step="1" data-k="x" data-id="${L.id}"></div>
+      <div class="mini" style="font-size:12px; color: #555;">Y (Vertical) <input type="range" min="-80" max="80" value="0" step="1" data-k="y" data-id="${L.id}"></div>
+      <div class="mini" style="font-size:12px; color: #555;">Scale <input type="range" min="95" max="105" value="100" step="0.1" data-k="s" data-id="${L.id}"></div>
     `;
     host.appendChild(row);
   });
@@ -300,5 +288,4 @@
 </script>
 </body>
 </html>
-
 
