@@ -1,304 +1,304 @@
-!DOCTYPE html
-html lang=zh-Hant head
-meta charset=UTF-8
-meta name=viewport content=width=device-width, initial-scale=1
-titleACOFUSION · 互動光層展示 (7 圖層版)title style
-  root{
-    --ink#222; --muted#6b7280; --line#e5e7eb; --bg#f7f7f7; --card#ffffff;
-    --accent#3b82f6; --accent-ink#fff;
+<!DOCTYPE html>
+<html lang="zh-Hant"> <head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ACOFUSION · 互動光層展示 (7 圖層版)</title> <style>
+  :root{
+    --ink:#222; --muted:#6b7280; --line:#e5e7eb; --bg:#f7f7f7; --card:#ffffff;
+    --accent:#3b82f6; --accent-ink:#fff;
   }
-  {box-sizingborder-box} html,body{height100%}
+  *{box-sizing:border-box} html,body{height:100%}
   body{
-    margin0; backgroundvar(--bg); colorvar(--ink);
-    font15px1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans TC;
-    displayflex; flex-directioncolumn; align-itemscenter; gap18px; padding24px;
+    margin:0; background:var(--bg); color:var(--ink);
+    font:15px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans TC";
+    display:flex; flex-direction:column; align-items:center; gap:18px; padding:24px;
   }
-  header{widthmin(1200px,96vw); displayflex; align-itemscenter; justify-contentspace-between; flex-wrapwrap; gap10px;}
-  .brand{displayflex; align-itemscenter; gap12px}
-  .logo{width28px; height28px; border-radius7px; backgroundvar(--ink); opacity.85}
-  h1{margin0; font-weight600; font-size18px; letter-spacing.2px}
+  header{width:min(1200px,96vw); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  .brand{display:flex; align-items:center; gap:12px}
+  .logo{width:28px; height:28px; border-radius:7px; background:var(--ink); opacity:.85}
+  h1{margin:0; font-weight:600; font-size:18px; letter-spacing:.2px}
 
-  .toolbar{displayflex; gap8px; align-itemscenter; flex-wrapwrap}
+  .toolbar{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
   select,.btn{
-    appearancenone; border1px solid var(--line); background#fff; colorvar(--ink);
-    padding8px 12px; border-radius10px; cursorpointer; font-weight600
+    appearance:none; border:1px solid var(--line); background:#fff; color:var(--ink);
+    padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:600
   }
-  .btn.primary{ backgroundvar(--accent); colorvar(--accent-ink); border-colortransparent }
-  .sub{font-size12px; colorvar(--muted)}
+  .btn.primary{ background:var(--accent); color:var(--accent-ink); border-color:transparent }
+  .sub{font-size:12px; color:var(--muted)}
 
   .stage-wrap{
-    positionrelative; widthmin(1200px,96vw);
-    border-radius16px; overflowhidden; background#0b0c0f;
-    box-shadow0 12px 40px #0002, 0 1px 0 #00000008;
-    border1px solid var(--line);
+    position:relative; width:min(1200px,96vw);
+    border-radius:16px; overflow:hidden; background:#0b0c0f;
+    box-shadow:0 12px 40px #0002, 0 1px 0 #00000008;
+    border:1px solid var(--line);
   }
-  .stage{positionabsolute; inset0}
-  .stage img{positionabsolute; inset0; width100%; height100%; object-fitcover; image-renderingauto}
-  .base{z-index1}
-  .layer{z-index2; opacity.6; mix-blend-modescreen; transitionopacity .08s linear}
-  .loading{positionabsolute; inset0; displaygrid; place-itemscenter; color#fff; background#0005; z-index9}
-  .errorbar{positionabsolute; left0; right0; top0; padding10px 14px; background#f87171; color#fff; font-size13px; displaynone; z-index10}
+  .stage{position:absolute; inset:0}
+  .stage img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; image-rendering:auto}
+  .base{z-index:1}
+  .layer{z-index:2; opacity:.6; mix-blend-mode:screen; transition:opacity .08s linear}
+  .loading{position:absolute; inset:0; display:grid; place-items:center; color:#fff; background:#0005; z-index:9}
+  .errorbar{position:absolute; left:0; right:0; top:0; padding:10px 14px; background:#f87171; color:#fff; font-size:13px; display:none; z-index:10}
 
   .panel{
-    widthmin(1200px,96vw); backgroundvar(--card); border1px solid var(--line);
-    border-radius16px; padding16px; box-shadow0 6px 24px #0000000d;
+    width:min(1200px,96vw); background:var(--card); border:1px solid var(--line);
+    border-radius:16px; padding:16px; box-shadow:0 6px 24px #0000000d;
   }
-  .head{displayflex; justify-contentspace-between; align-itemscenter; margin-bottom8px}
+  .head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px}
   .grid{
-    displaygrid; gap12px;
-     [Gemini Edit] 預設為 2 欄 (改善手機體驗) 
-    grid-template-columnsrepeat(2,1fr);
+    display:grid; gap:12px;
+    /* [Gemini Edit] 預設為 2 欄 (改善手機體驗) */
+    grid-template-columns:repeat(2,1fr);
   }
-   [Gemini Edit] 電腦版改為 3 欄 (佈局更均衡) 
-  @media (min-width900px){ .grid{grid-template-columnsrepeat(3,1fr)} }
-  .group{displayflex; flex-directioncolumn; gap8px; background#fff; padding12px; border1px solid var(--line); border-radius12px}
-  .group label{font-size12px; colorvar(--muted); displayflex; justify-contentspace-between}
-  .pill{font-size12px; color#111; padding2px 8px; border-radius999px; border1px solid var(--line); background#fafafa}
+  /* [Gemini Edit] 電腦版改為 3 欄 (佈局更均衡) */
+  @media (min-width:900px){ .grid{grid-template-columns:repeat(3,1fr)} }
+  .group{display:flex; flex-direction:column; gap:8px; background:#fff; padding:12px; border:1px solid var(--line); border-radius:12px}
+  .group label{font-size:12px; color:var(--muted); display:flex; justify-content:space-between}
+  .pill{font-size:12px; color:#111; padding:2px 8px; border-radius:999px; border:1px solid var(--line); background:#fafafa}
 
-   [Gemini Edit] 加高滑桿，方便觸控 
-  input[type=range]{-webkit-appearancenone; appearancenone; width100%; height14px; border-radius999px; background#eef2f7}
-   [Gemini Edit] 加大拖曳圓點，方便觸控 
-  input[type=range]-webkit-slider-thumb{-webkit-appearancenone;width22px;height22px;border-radius50%; backgroundvar(--accent); border2px solid #fff; box-shadow0 1px 0 #0001; cursorpointer}
-  input[type=range]-moz-range-thumb{width22px;height22px;border-radius50%; backgroundvar(--accent); border2px solid #fff; cursorpointer}
+  /* [Gemini Edit] 加高滑桿，方便觸控 */
+  input[type=range]{-webkit-appearance:none; appearance:none; width:100%; height:14px; border-radius:999px; background:#eef2f7}
+  /* [Gemini Edit] 加大拖曳圓點，方便觸控 */
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%; background:var(--accent); border:2px solid #fff; box-shadow:0 1px 0 #0001; cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%; background:var(--accent); border:2px solid #fff; cursor:pointer}
 
-style
-head
-body
-  header
-    div class=branddiv class=logodivh1ACOFUSION · 互動光層展示 (7 圖層版)h1div
-    div class=toolbar
-      label class=sub混合模式
-        select id=blend
-          option value=screen selected濾色 (Screen)option
-          option value=normal一般 (Normal)option
-          option value=lighten變亮 (Lighten)option
-          option value=plus-lighter加亮 (Plus Lighter)option
-        select
-      label
-      button class=btn id=reset重設 (Reset)button
-    div
-  header
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand"><div class="logo"></div><h1>ACOFUSION · 互動光層展示 (7 圖層版)</h1></div>
+    <div class="toolbar">
+      <label class="sub">混合模式
+        <select id="blend">
+          <option value="screen" selected>濾色 (Screen)</option>
+          <option value="normal">一般 (Normal)</option>
+          <option value="lighten">變亮 (Lighten)</option>
+          <option value="plus-lighter">加亮 (Plus Lighter)</option>
+        </select>
+      </label>
+      <button class="btn" id="reset">重設 (Reset)</button>
+    </div>
+  </header>
 
-  div class=stage-wrap id=wrap
-    div class=errorbar id=errdiv
-    div class=loading id=loading載入影像中…div
-    div class=stage
-      !-- 確保這些圖片檔與 .html 檔案在同一個資料夾 --
-      !-- [Gemini 修改] 在所有圖片 src 後面加上 v=2 來強制清除快取 --
-      img class=base  id=img-base      src=base.jpgv=2 alt=基礎圖層
-      img class=layer id=img-l01-accent  src=L01_Accent.jpgv=2  alt=L01 - 植物聚光燈
-      img class=layer id=img-l02-faint   src=L02_Faint_Ambient.jpgv=2 alt=L02 - 微弱環境光
-      img class=layer id=img-l03-strip   src=L03_Bar_Strip.jpgv=2 alt=L03 - 吧台燈帶
-      img class=layer id=img-l04-floor   src=L04_Floor_Wash.jpgv=2 alt=L04 - 右側地板燈
-      img class=layer id=img-l05-back    src=L05_Back_Room.jpgv=2 alt=L05 - 後方置物架
-      img class=layer id=img-l06-pendant src=L06_Pendants.jpgv=2 alt=L06 - 吧台吊燈
-      img class=layer id=img-l07-wall    src=L07_Main_Wall.jpgv=2 alt=L07 - 左側主牆燈
-    div
-  div
+  <div class="stage-wrap" id="wrap">
+    <div class="errorbar" id="err"></div>
+    <div class="loading" id="loading">載入影像中…</div>
+    <div class="stage">
+      <!-- 確保這些圖片檔與 .html 檔案在同一個資料夾 -->
+      <!-- [Gemini 修改] 在所有圖片 src 後面加上 ?v=2 來強制清除快取 -->
+      <img class="base"  id="img-base"      src="base.jpg?v=2" alt="基礎圖層"/>
+      <img class="layer" id="img-l01-accent"  src="L01_Accent.jpg?v=2"  alt="L01 - 植物聚光燈"/>
+      <img class="layer" id="img-l02-faint"   src="L02_Faint_Ambient.jpg?v=2" alt="L02 - 微弱環境光"/>
+      <img class="layer" id="img-l03-strip"   src="L03_Bar_Strip.jpg?v=2" alt="L03 - 吧台燈帶"/>
+      <img class="layer" id="img-l04-floor"   src="L04_Floor_Wash.jpg?v=2" alt="L04 - 右側地板燈"/>
+      <img class="layer" id="img-l05-back"    src="L05_Back_Room.jpg?v=2" alt="L05 - 後方置物架"/>
+      <img class="layer" id="img-l06-pendant" src="L06_Pendants.jpg?v=2" alt="L06 - 吧台吊燈"/>
+      <img class="layer" id="img-l07-wall"    src="L07_Main_Wall.jpg?v=2" alt="L07 - 左側主牆燈"/>
+    </div>
+  </div>
 
-  section class=panel
-    div class=head
-      div class=sub拖曳滑桿以混合光層。div
-    div
-    div class=grid
-      !-- [Gemini 新增] 基礎亮度滑桿 --
-      div class=grouplabelL00 - 基礎亮度 span class=pill id=v-l00-base100%spanlabel
-        input type=range id=s-l00-base min=0 max=200 step=1 value=100div
+  <section class="panel">
+    <div class="head">
+      <div class="sub">拖曳滑桿以混合光層。</div>
+    </div>
+    <div class="grid">
+      <!-- [Gemini 新增] 基礎亮度滑桿 -->
+      <div class="group"><label>L00 - 基礎亮度 <span class="pill" id="v-l00-base">100%</span></label>
+        <input type="range" id="s-l00-base" min="0" max="200" step="1" value="100"/></div>
 
-      div class=grouplabelL01 - 植物聚光燈 span class=pill id=v-l01-accent50%spanlabel
-        input type=range id=s-l01-accent min=0 max=100 step=1 value=50div
-      div class=grouplabelL02 - 微弱環境光 span class=pill id=v-l02-faint50%spanlabel
-        input type=range id=s-l02-faint  min=0 max=100 step=1 value=50div
-      div class=grouplabelL03 - 吧台燈帶 span class=pill id=v-l03-strip50%spanlabel
-        input type=range id=s-l03-strip  min=0 max=100 step=1 value=50div
-      div class=grouplabelL04 - 右側地板燈 span class=pill id=v-l04-floor50%spanlabel
-        input type=range id=s-l04-floor  min=0 max=100 step=1 value=50div
-      div class=grouplabelL05 - 後方置物架 span class=pill id=v-l05-back50%spanlabel
-        input type=range id=s-l05-back   min=0 max=100 step=1 value=50div
-      div class=grouplabelL06 - 吧台吊燈 span class=pill id=v-l06-pendant50%spanlabel
-        input type=range id=s-l06-pendant min=0 max=100 step=1 value=50div
-      div class=grouplabelL07 - 左側主牆燈 span class=pill id=v-l07-wall50%spanlabel
-        input type=range id=s-l07-wall    min=0 max=100 step=1 value=50div
-    div
-    section
+      <div class="group"><label>L01 - 植物聚光燈 <span class="pill" id="v-l01-accent">50%</span></label>
+        <input type="range" id="s-l01-accent" min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L02 - 微弱環境光 <span class="pill" id="v-l02-faint">50%</span></label>
+        <input type="range" id="s-l02-faint"  min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L03 - 吧台燈帶 <span class="pill" id="v-l03-strip">50%</span></label>
+        <input type="range" id="s-l03-strip"  min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L04 - 右側地板燈 <span class="pill" id="v-l04-floor">50%</span></label>
+        <input type="range" id="s-l04-floor"  min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L05 - 後方置物架 <span class="pill" id="v-l05-back">50%</span></label>
+        <input type="range" id="s-l05-back"   min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L06 - 吧台吊燈 <span class="pill" id="v-l06-pendant">50%</span></label>
+        <input type="range" id="s-l06-pendant" min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L07 - 左側主牆燈 <span class="pill" id="v-l07-wall">50%</span></label>
+        <input type="range" id="s-l07-wall"    min="0" max="100" step="1" value="50"/></div>
+    </div>
+    </section>
 
-  details class=align style=widthmin(1200px,96vw); padding 10px;
-    summaryAlignment Lab (對位工具) — 手動調整位移縮放 & DIFF 檢視summary
-    div class=align-body style=background #fff; border 1px solid var(--line); border-radius 12px; padding 12px; margin-top 8px;
-      label class=mini style=display flex; align-items center; gap 6px;
-        input type=checkbox id=diff 啟用 DIFF 差異混合模式 (除錯用)
-      label
-      div class=align-grid id=alignGrid style=display grid; grid-template-columns repeat(auto-fill, minmax(220px, 1fr)); gap 10px; margin-top 10px;div
-      div class=sub style=margin-top6px; font-size 12px;
-        提示 在 DIFF 模式下，邊緣若出現亮框代表未對齊；調整到畫面趨近「全黑」即為完美對齊。
-      div
-    div
-  details
+  <details class="align" style="width:min(1200px,96vw); padding: 10px;">
+    <summary>Alignment Lab (對位工具) — 手動調整位移/縮放 & DIFF 檢視</summary>
+    <div class="align-body" style="background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-top: 8px;">
+      <label class="mini" style="display: flex; align-items: center; gap: 6px;">
+        <input type="checkbox" id="diff"> 啟用 DIFF 差異混合模式 (除錯用)
+      </label>
+      <div class="align-grid" id="alignGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 10px;"></div>
+      <div class="sub" style="margin-top:6px; font-size: 12px;">
+        提示: 在 DIFF 模式下，邊緣若出現亮框代表未對齊；調整到畫面趨近「全黑」即為完美對齊。
+      </div>
+    </div>
+  </details>
 
-script
+<script>
 (function(){
-  const $ = (s)=document.querySelector(s);
+  const $ = (s)=>document.querySelector(s);
   const wrap = $('#wrap'), err=$('#err'), loading=$('#loading');
 
-   定義 7 個圖層
+  // 定義 7 個圖層
   const EL = {
-    base     $('#img-base'),
-    l01      $('#img-l01-accent'),
-    l02      $('#img-l02-faint'),
-    l03      $('#img-l03-strip'),
-    l04      $('#img-l04-floor'),
-    l05      $('#img-l05-back'),
-    l06      $('#img-l06-pendant'),
-    l07      $('#img-l07-wall')
+    base:     $('#img-base'),
+    l01:      $('#img-l01-accent'),
+    l02:      $('#img-l02-faint'),
+    l03:      $('#img-l03-strip'),
+    l04:      $('#img-l04-floor'),
+    l05:      $('#img-l05-back'),
+    l06:      $('#img-l06-pendant'),
+    l07:      $('#img-l07-wall')
   };
 
-   定義 8 個滑桿 (包含新的 L00)
+  // 定義 8 個滑桿 (包含新的 L00)
   const sliders = {
-    l00      $('#s-l00-base'),
-    l01      $('#s-l01-accent'),
-    l02      $('#s-l02-faint'),
-    l03      $('#s-l03-strip'),
-    l04      $('#s-l04-floor'),
-    l05      $('#s-l05-back'),
-    l06      $('#s-l06-pendant'),
-    l07      $('#s-l07-wall')
+    l00:      $('#s-l00-base'),
+    l01:      $('#s-l01-accent'),
+    l02:      $('#s-l02-faint'),
+    l03:      $('#s-l03-strip'),
+    l04:      $('#s-l04-floor'),
+    l05:      $('#s-l05-back'),
+    l06:      $('#s-l06-pendant'),
+    l07:      $('#s-l07-wall')
   };
   
-   定義 8 個數值標籤 (包含新的 L00)
+  // 定義 8 個數值標籤 (包含新的 L00)
   const pills = {
-    l00      $('#v-l00-base'),
-    l01      $('#v-l01-accent'),
-    l02      $('#v-l02-faint'),
-    l03      $('#v-l03-strip'),
-    l04      $('#v-l04-floor'),
-    l05      $('#v-l05-back'),
-    l06      $('#v-l06-pendant'),
-    l07      $('#v-l07-wall')
+    l00:      $('#v-l00-base'),
+    l01:      $('#v-l01-accent'),
+    l02:      $('#v-l02-faint'),
+    l03:      $('#v-l03-strip'),
+    l04:      $('#v-l04-floor'),
+    l05:      $('#v-l05-back'),
+    l06:      $('#v-l06-pendant'),
+    l07:      $('#v-l07-wall')
   };
 
-   [Gemini 修改] 在所有預載入檔案名稱後面加上 v=2
+  // [Gemini 修改] 在所有預載入檔案名稱後面加上 ?v=2
   const files=[
-    'base.jpgv=2',
-    'L01_Accent.jpgv=2',
-    'L02_Faint_Ambient.jpgv=2',
-    'L03_Bar_Strip.jpgv=2',
-    'L04_Floor_Wash.jpgv=2',
-    'L05_Back_Room.jpgv=2',
-    'L06_Pendants.jpgv=2',
-    'L07_Main_Wall.jpgv=2'
+    'base.jpg?v=2',
+    'L01_Accent.jpg?v=2',
+    'L02_Faint_Ambient.jpg?v=2',
+    'L03_Bar_Strip.jpg?v=2',
+    'L04_Floor_Wash.jpg?v=2',
+    'L05_Back_Room.jpg?v=2',
+    'L06_Pendants.jpg?v=2',
+    'L07_Main_Wall.jpg?v=2'
   ];
   
-  Promise.all(files.map(src=new Promise(res={
-    const i=new Image(); i.onload=()=res({src,wi.naturalWidth,hi.naturalHeight,oktrue});
-    i.onerror=()=res({src,okfalse}); i.src=src;
-  }))).then(arr={
+  Promise.all(files.map(src=>new Promise(res=>{
+    const i=new Image(); i.onload=()=>res({src,w:i.naturalWidth,h:i.naturalHeight,ok:true});
+    i.onerror=()=>res({src,ok:false}); i.src=src;
+  }))).then(arr=>{
     loading && loading.remove();
-    const missing=arr.filter(x=!x.ok).map(x=x.src);
+    const missing=arr.filter(x=>!x.ok).map(x=>x.src);
     let msg='';
-    if(missing.length) msg+='遺失檔案 '+missing.join(', ')+' . ';
-    const ok=arr.filter(x=x.ok);
+    if(missing.length) msg+='遺失檔案: '+missing.join(', ')+' . ';
+    const ok=arr.filter(x=>x.ok);
     if(ok.length){
-      const baseInfo = arr.find(x=x.src.includes('base'))  ok[0];
+      const baseInfo = arr.find(x=>x.src.includes('base')) || ok[0];
       if (baseInfo && baseInfo.w && baseInfo.h){
-         確保影像容器有正確的長寬比
-        wrap.style.aspectRatio = baseInfo.w + '  ' + baseInfo.h;
+        // 確保影像容器有正確的長寬比
+        wrap.style.aspectRatio = baseInfo.w + ' / ' + baseInfo.h;
       }
       const w0=ok[0].w,h0=ok[0].h;
-      const mismatch=ok.some(x=x.w!==w0x.h!==h0);
+      const mismatch=ok.some(x=>x.w!==w0||x.h!==h0);
       
-       [Gemini Edit] 暫時隱藏尺寸不符的錯誤，以便測試
-       if(mismatch) msg+='影像尺寸不一致；請確保所有圖層像素相同。';
+      // [Gemini Edit] 暫時隱藏尺寸不符的錯誤，以便測試
+      // if(mismatch) msg+='影像尺寸不一致；請確保所有圖層像素相同。';
     }
     if(msg){ err.textContent=msg; err.style.display='block'; }
   });
 
-   Blend mode
-  $('#blend').addEventListener('change', e={
-    document.querySelectorAll('.layer').forEach(el= el.style.mixBlendMode = e.target.value);
+  // Blend mode
+  $('#blend').addEventListener('change', e=>{
+    document.querySelectorAll('.layer').forEach(el=> el.style.mixBlendMode = e.target.value);
   });
   $('#blend').dispatchEvent(new Event('change'));
 
-   [Gemini 修改] 連結滑桿
-   設置圖層透明度 (Opacity)
-  const setOpacity = (el, s, pill)={ const v = Number(s.value)100; el.style.opacity = v; pill.textContent = Math.round(v100)+'%'; };
-   設置基礎亮度 (Brightness)
-  const setBrightness = (el, s, pill)={ const v = Number(s.value)100; el.style.filter = `brightness(${v})`; pill.textContent = Math.round(v100)+'%'; };
+  // [Gemini 修改] 連結滑桿
+  // 設置圖層透明度 (Opacity)
+  const setOpacity = (el, s, pill)=>{ const v = Number(s.value)/100; el.style.opacity = v; pill.textContent = Math.round(v*100)+'%'; };
+  // 設置基礎亮度 (Brightness)
+  const setBrightness = (el, s, pill)=>{ const v = Number(s.value)/100; el.style.filter = `brightness(${v})`; pill.textContent = Math.round(v*100)+'%'; };
 
-  ['input','change'].forEach(evt={
-     基礎亮度 (L00)
-    if (sliders.l00) sliders.l00.addEventListener(evt, ()=setBrightness(EL.base,sliders.l00,pills.l00));
-     圖層透明度 (L01-L07)
-    if (sliders.l01) sliders.l01.addEventListener(evt, ()=setOpacity(EL.l01,sliders.l01,pills.l01));
-    if (sliders.l02) sliders.l02.addEventListener(evt, ()=setOpacity(EL.l02,sliders.l02,pills.l02));
-    if (sliders.l03) sliders.l03.addEventListener(evt, ()=setOpacity(EL.l03,sliders.l03,pills.l03));
-    if (sliders.l04) sliders.l04.addEventListener(evt, ()=setOpacity(EL.l04,sliders.l04,pills.l04));
-    if (sliders.l05) sliders.l05.addEventListener(evt, ()=setOpacity(EL.l05,sliders.l05,pills.l05));
-    if (sliders.l06) sliders.l06.addEventListener(evt, ()=setOpacity(EL.l06,sliders.l06,pills.l06));
-    if (sliders.l07) sliders.l07.addEventListener(evt, ()=setOpacity(EL.l07,sliders.l07,pills.l07));
+  ['input','change'].forEach(evt=>{
+    // 基礎亮度 (L00)
+    if (sliders.l00) sliders.l00.addEventListener(evt, ()=>setBrightness(EL.base,sliders.l00,pills.l00));
+    // 圖層透明度 (L01-L07)
+    if (sliders.l01) sliders.l01.addEventListener(evt, ()=>setOpacity(EL.l01,sliders.l01,pills.l01));
+    if (sliders.l02) sliders.l02.addEventListener(evt, ()=>setOpacity(EL.l02,sliders.l02,pills.l02));
+    if (sliders.l03) sliders.l03.addEventListener(evt, ()=>setOpacity(EL.l03,sliders.l03,pills.l03));
+    if (sliders.l04) sliders.l04.addEventListener(evt, ()=>setOpacity(EL.l04,sliders.l04,pills.l04));
+    if (sliders.l05) sliders.l05.addEventListener(evt, ()=>setOpacity(EL.l05,sliders.l05,pills.l05));
+    if (sliders.l06) sliders.l06.addEventListener(evt, ()=>setOpacity(EL.l06,sliders.l06,pills.l06));
+    if (sliders.l07) sliders.l07.addEventListener(evt, ()=>setOpacity(EL.l07,sliders.l07,pills.l07));
   });
   
-   觸發一次，套用預設值
-  Object.values(sliders).forEach(s= s && s.dispatchEvent(new Event('input')));  加上 s 檢查
+  // 觸發一次，套用預設值
+  Object.values(sliders).forEach(s=> s && s.dispatchEvent(new Event('input'))); // 加上 s 檢查
 
-   [Gemini 修改] Reset 按鈕重設 8 個滑桿
-  $('#reset').addEventListener('click', ()={
-    Object.values(sliders).forEach(s = {
+  // [Gemini 修改] Reset 按鈕重設 8 個滑桿
+  $('#reset').addEventListener('click', ()=>{
+    Object.values(sliders).forEach(s => {
       if (!s) return;
       if (s.id === 's-l00-base') {
-        s.value = 100;  重設基礎亮度為 100
+        s.value = 100; // 重設基礎亮度為 100
       } else {
-        s.value = 50;  重設其他圖層為 50
+        s.value = 50; // 重設其他圖層為 50
       }
       s.dispatchEvent(new Event('input'));
     });
   });
 
-   Alignment Lab 對位工具支援 7 個圖層 
+  /* Alignment Lab 對位工具支援 7 個圖層 */
   const alignList = [
-    {id'img-l01-accent', name'L01 - 植物聚光燈'},
-    {id'img-l02-faint', name'L02 - 微弱環境光'},
-    {id'img-l03-strip', name'L03 - 吧台燈帶'},
-    {id'img-l04-floor', name'L04 - 右側地板燈'},
-    {id'img-l05-back', name'L05 - 後方置物架'},
-    {id'img-l06-pendant', name'L06 - 吧台吊燈'},
-    {id'img-l07-wall', name'L07 - 左側主牆燈'}
+    {id:'img-l01-accent', name:'L01 - 植物聚光燈'},
+    {id:'img-l02-faint', name:'L02 - 微弱環境光'},
+    {id:'img-l03-strip', name:'L03 - 吧台燈帶'},
+    {id:'img-l04-floor', name:'L04 - 右側地板燈'},
+    {id:'img-l05-back', name:'L05 - 後方置物架'},
+    {id:'img-l06-pendant', name:'L06 - 吧台吊燈'},
+    {id:'img-l07-wall', name:'L07 - 左側主牆燈'}
   ];
   const host = document.getElementById('alignGrid');
-  alignList.forEach(L={
+  alignList.forEach(L=>{
     const row = document.createElement('div');
     row.style.border = '1px solid var(--line)';
     row.style.borderRadius = '12px';
     row.style.padding = '10px';
     row.style.background = '#fcfcfc';
     row.innerHTML = `
-      div style=font-weight600;margin-bottom6px; font-size 13px;${L.name}div
-      div class=mini style=font-size12px; color #555;X (左右) input type=range min=-80 max=80 value=0 step=1 data-k=x data-id=${L.id}div
-      div class=mini style=font-size12px; color #555;Y (上下) input type=range min=-80 max=80 value=0 step=1 data-k=y data-id=${L.id}div
-      div class=mini style=font-size12px; color #555;Scale (縮放) input type=range min=95 max=105 value=100 step=0.1 data-k=s data-id=${L.id}div
+      <div style="font-weight:600;margin-bottom:6px; font-size: 13px;">${L.name}</div>
+      <div class="mini" style="font-size:12px; color: #555;">X (左右) <input type="range" min="-80" max="80" value="0" step="1" data-k="x" data-id="${L.id}"></div>
+      <div class="mini" style="font-size:12px; color: #555;">Y (上下) <input type="range" min="-80" max="80" value="0" step="1" data-k="y" data-id="${L.id}"></div>
+      <div class="mini" style="font-size:12px; color: #555;">Scale (縮放) <input type="range" min="95" max="105" value="100" step="0.1" data-k="s" data-id="${L.id}"></div>
     `;
     host.appendChild(row);
   });
   function applyAlign(){
-    document.querySelectorAll('#alignGrid input').forEach(inp={
+    document.querySelectorAll('#alignGrid input').forEach(inp=>{
       const id=inp.dataset.id, k=inp.dataset.k, v=Number(inp.value);
       const el=document.getElementById(id);
       if (!el) return;
-      const st=el._adj{x0,y0,s100}; st[k]=v; el._adj=st;
+      const st=el._adj||{x:0,y:0,s:100}; st[k]=v; el._adj=st;
       el.style.transformOrigin='center center';
-      el.style.transform = `translate(${st.x}px, ${st.y}px) scale(${st.s100})`;
+      el.style.transform = `translate(${st.x}px, ${st.y}px) scale(${st.s/100})`;
     });
   }
   host.addEventListener('input', applyAlign); applyAlign();
 
-   DIFF debug
+  // DIFF debug
   const diff = document.getElementById('diff');
-  diff.addEventListener('change', (e)={
-    const mode = e.target.checked  'difference'  document.getElementById('blend').value  'screen';
-    document.querySelectorAll('.layer').forEach(el= el.style.mixBlendMode = mode);
+  diff.addEventListener('change', (e)=>{
+    const mode = e.target.checked ? 'difference' : document.getElementById('blend').value || 'screen';
+    document.querySelectorAll('.layer').forEach(el=> el.style.mixBlendMode = mode);
   });
 })();
-script
-body
-html
+</script>
+</body>
+</html>
 
 
