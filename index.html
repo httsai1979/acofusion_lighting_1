@@ -11,9 +11,16 @@
   body{
     margin:0; background:var(--bg); color:var(--ink);
     font:15px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans TC";
-    display:flex; flex-direction:column; align-items:center; gap:18px; padding:24px;
+    display:flex; flex-direction:column; align-items:center; gap:18px; 
+    /* [Gemini Edit] Padding top/bottom, but zero left/right */
+    padding: 18px 0; 
   }
-  header{width:min(1200px,96vw); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  /* [Gemini Edit] Center header content */
+  header{
+    width:min(1200px, 96vw); 
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    margin-left: auto; margin-right: auto;
+  }
   .brand{display:flex; align-items:center; gap:12px}
   .logo{width:28px; height:28px; border-radius:7px; background:var(--ink); opacity:.85}
   h1{margin:0; font-weight:600; font-size:18px; letter-spacing:.2px}
@@ -26,38 +33,46 @@
   .btn.primary{ background:var(--accent); color:var(--accent-ink); border-color:transparent }
   .sub{font-size:12px; color:var(--muted)}
 
+  /* [Gemini Edit] Make stage 100% width, remove radius/border */
   .stage-wrap{
-    position:relative; width:min(1200px,96vw);
-    border-radius:16px; overflow:hidden; background:#0b0c0f;
+    position:relative; 
+    width: 100%; /* Use full screen width */
+    overflow:hidden; 
+    background:#0b0c0f;
     box-shadow:0 12px 40px #0002, 0 1px 0 #00000008;
-    border:1px solid var(--line);
+    /* Height will be set by JavaScript based on image aspect ratio */
   }
   .stage{position:absolute; inset:0}
-  .stage img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; image-rendering:auto}
+  .stage img{
+    position:absolute; inset:0; width:100%; height:100%; 
+    /* Use 'cover' to fill, but aspect ratio is set on parent */
+    object-fit:cover; 
+    image-rendering:auto;
+  }
   .base{z-index:1}
   .layer{z-index:2; opacity:.6; mix-blend-mode:screen; transition:opacity .08s linear}
   .loading{position:absolute; inset:0; display:grid; place-items:center; color:#fff; background:#0005; z-index:9}
   .errorbar{position:absolute; left:0; right:0; top:0; padding:10px 14px; background:#f87171; color:#fff; font-size:13px; display:none; z-index:10}
 
+  /* [Gemini Edit] Center panel content */
   .panel{
-    width:min(1200px,96vw); background:var(--card); border:1px solid var(--line);
+    width:min(1200px, 96vw); background:var(--card); border:1px solid var(--line);
     border-radius:16px; padding:16px; box-shadow:0 6px 24px #0000000d;
+    margin-left: auto; margin-right: auto;
   }
   .head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px}
   .grid{
     display:grid; gap:12px;
-    /* [Gemini Edit] Default to 2 columns (better mobile experience) */
     grid-template-columns:repeat(2,1fr);
   }
-  /* [Gemini Edit] Desktop version to 3 columns (more balanced) */
-  @media (min-width:900px){ .grid{grid-template-columns:repeat(3,1fr)} }
+  @media (min-width:900px){ 
+    .grid{grid-template-columns:repeat(3,1fr)} 
+  }
   .group{display:flex; flex-direction:column; gap:8px; background:#fff; padding:12px; border:1px solid var(--line); border-radius:12px}
   .group label{font-size:12px; color:var(--muted); display:flex; justify-content:space-between}
   .pill{font-size:12px; color:#111; padding:2px 8px; border-radius:999px; border:1px solid var(--line); background:#fafafa}
 
-  /* [Gemini Edit] Taller sliders for easier touch */
   input[type=range]{-webkit-appearance:none; appearance:none; width:100%; height:14px; border-radius:999px; background:#eef2f7}
-  /* [Gemini Edit] Larger thumbs for easier touch */
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%; background:var(--accent); border:2px solid #fff; box-shadow:0 1px 0 #0001; cursor:pointer}
   input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%; background:var(--accent); border:2px solid #fff; cursor:pointer}
 
@@ -83,8 +98,6 @@
     <div class="errorbar" id="err"></div>
     <div class="loading" id="loading">Loading images…</div>
     <div class="stage">
-      <!-- Ensure these image files are in the same folder as the .html file -->
-      <!-- [Gemini Edit] Added ?v=2 to all image src to force-clear cache -->
       <img class="base"  id="img-base"      src="base.jpg?v=2" alt="Base Layer"/>
       <img class="layer" id="img-l01-accent"  src="L01_Accent.jpg?v=2"  alt="L01 - Plant Spotlight"/>
       <img class="layer" id="img-l02-faint"   src="L02_Faint_Ambient.jpg?v=2" alt="L02 - Faint Ambient"/>
@@ -101,8 +114,6 @@
       <div class="sub">Drag the sliders to blend the light layers.</div>
     </div>
     <div class="grid">
-      <!-- [Gemini Edit] Removed L00 Base Brightness slider per request -->
-
       <div class="group"><label>L01 - Plant Spotlight <span class="pill" id="v-l01-accent">50%</span></label>
         <input type="range" id="s-l01-accent" min="0" max="100" step="1" value="50"/></div>
       <div class="group"><label>L02 - Faint Ambient <span class="pill" id="v-l02-faint">50%</span></label>
@@ -120,7 +131,8 @@
     </div>
     </section>
 
-  <details class="align" style="width:min(1200px,96vw); padding: 10px;">
+  <!-- [Gemini Edit] Center the alignment lab content -->
+  <details class="align" style="width:min(1200px, 96vw); padding: 10px; margin-left: auto; margin-right: auto;">
     <summary>Alignment Lab — Manual offset/scale adjustment & DIFF View</summary>
     <div class="align-body" style="background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-top: 8px;">
       <label class="mini" style="display: flex; align-items: center; gap: 6px;">
@@ -138,7 +150,6 @@
   const $ = (s)=>document.querySelector(s);
   const wrap = $('#wrap'), err=$('#err'), loading=$('#loading');
 
-  // Define image elements
   const EL = {
     base:     $('#img-base'),
     l01:      $('#img-l01-accent'),
@@ -150,7 +161,6 @@
     l07:      $('#img-l07-wall')
   };
 
-  // Define 7 sliders
   const sliders = {
     l01:      $('#s-l01-accent'),
     l02:      $('#s-l02-faint'),
@@ -161,7 +171,6 @@
     l07:      $('#s-l07-wall')
   };
   
-  // Define 7 value pills
   const pills = {
     l01:      $('#v-l01-accent'),
     l02:      $('#v-l02-faint'),
@@ -172,7 +181,6 @@
     l07:      $('#v-l07-wall')
   };
 
-  // [Gemini Edit] Add ?v=2 to all file names to bust cache
   const files=[
     'base.jpg?v=2',
     'L01_Accent.jpg?v=2',
@@ -195,15 +203,18 @@
     const ok=arr.filter(x=>x.ok);
     if(ok.length){
       const baseInfo = arr.find(x=>x.src.includes('base')) || ok[0];
+
+      // [Gemini Edit] RE-ENABLED aspect-ratio.
+      // This ensures the full image is shown without cropping.
+      // The image may appear short if the source image is very wide.
       if (baseInfo && baseInfo.w && baseInfo.h){
-        // Ensure the image container has the correct aspect ratio
         wrap.style.aspectRatio = baseInfo.w + ' / ' + baseInfo.h;
       }
+
       const w0=ok[0].w,h0=ok[0].h;
       const mismatch=ok.some(x=>x.w!==w0||x.h!==h0);
       
-      // [Gemini Edit] Temporarily hide mismatch error for testing
-      // if(mismatch) msg+='Image dimensions do not match. Please ensure all layers have the same pixel size.';
+      // if(mismatch) msg+='Image dimensions do not match...';
     }
     if(msg){ err.textContent=msg; err.style.display='block'; }
   });
@@ -214,12 +225,9 @@
   });
   $('#blend').dispatchEvent(new Event('change'));
 
-  // [Gemini Edit] Link sliders
-  // Set layer opacity
   const setOpacity = (el, s, pill)=>{ const v = Number(s.value)/100; el.style.opacity = v; pill.textContent = Math.round(v*100)+'%'; };
 
   ['input','change'].forEach(evt=>{
-    // Layer Opacity (L01-L07)
     if (sliders.l01) sliders.l01.addEventListener(evt, ()=>setOpacity(EL.l01,sliders.l01,pills.l01));
     if (sliders.l02) sliders.l02.addEventListener(evt, ()=>setOpacity(EL.l02,sliders.l02,pills.l02));
     if (sliders.l03) sliders.l03.addEventListener(evt, ()=>setOpacity(EL.l03,sliders.l03,pills.l03));
@@ -229,19 +237,17 @@
     if (sliders.l07) sliders.l07.addEventListener(evt, ()=>setOpacity(EL.l07,sliders.l07,pills.l07));
   });
   
-  // Trigger once to apply default values
-  Object.values(sliders).forEach(s=> s && s.dispatchEvent(new Event('input'))); // Add check for s
+  Object.values(sliders).forEach(s=> s && s.dispatchEvent(new Event('input')));
 
-  // [Gemini Edit] Reset button now resets 7 sliders
   $('#reset').addEventListener('click', ()=>{
     Object.values(sliders).forEach(s => {
       if (!s) return;
-      s.value = 50; // Reset all layers to 50
+      s.value = 50; 
       s.dispatchEvent(new Event('input'));
     });
   });
 
-  /* Alignment Lab - support for 7 layers */
+  /* Alignment Lab */
   const alignList = [
     {id:'img-l01-accent', name:'L01 - Plant Spotlight'},
     {id:'img-l02-faint', name:'L02 - Faint Ambient'},
