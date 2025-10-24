@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en-GB"> <head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ACOFUSION · Interactive Lighting Layer Demo (7-Layer Version)</title> <style>
+  :root{
+    --ink:#222; --muted:#6b7280; --line:#e5e7eb; --bg:#f7f7f7; --card:#ffffff;
+    --accent:#3b82f6; --accent-ink:#fff;
+  }
+  *{box-sizing:border-box} html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:15px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans TC";
+    display:flex; flex-direction:column; align-items:center; gap:18px; padding:24px;
+  }
+  header{width:min(1200px,96vw); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  .brand{display:flex; align-items:center; gap:12px}
+  .logo{width:28px; height:28px; border-radius:7px; background:var(--ink); opacity:.85}
+  h1{margin:0; font-weight:600; font-size:18px; letter-spacing:.2px}
+
+  .toolbar{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  select,.btn{
+    appearance:none; border:1px solid var(--line); background:#fff; color:var(--ink);
+    padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:600
+  }
+  .btn.primary{ background:var(--accent); color:var(--accent-ink); border-color:transparent }
+  .sub{font-size:12px; color:var(--muted)}
+
+  .stage-wrap{
+    position:relative; width:min(1200px,96vw);
+    border-radius:16px; overflow:hidden; background:#0b0c0f;
+    box-shadow:0 12px 40px #0002, 0 1px 0 #00000008;
+    border:1px solid var(--line);
+  }
+  .stage{position:absolute; inset:0}
+  .stage img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; image-rendering:auto}
+  .base{z-index:1}
+  .layer{z-index:2; opacity:.6; mix-blend-mode:screen; transition:opacity .08s linear}
+  .loading{position:absolute; inset:0; display:grid; place-items:center; color:#fff; background:#0005; z-index:9}
+  .errorbar{position:absolute; left:0; right:0; top:0; padding:10px 14px; background:#f87171; color:#fff; font-size:13px; display:none; z-index:10}
+
+  .panel{
+    width:min(1200px,96vw); background:var(--card); border:1px solid var(--line);
+    border-radius:16px; padding:16px; box-shadow:0 6px 24px #0000000d;
+  }
+  .head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px}
+  .grid{
+    display:grid; gap:12px;
+    /* [Gemini Edit] Default to 2 columns (improves mobile experience) */
+    grid-template-columns:repeat(2,1fr);
+  }
+  /* [Gemini Edit] Switch to 3 columns (more balanced layout) */
+  @media (min-width:900px){ .grid{grid-template-columns:repeat(3,1fr)} }
+  .group{display:flex; flex-direction:column; gap:8px; background:#fff; padding:12px; border:1px solid var(--line); border-radius:12px}
+  .group label{font-size:12px; color:var(--muted); display:flex; justify-content:space-between}
+  .pill{font-size:12px; color:#111; padding:2px 8px; border-radius:999px; border:1px solid var(--line); background:#fafafa}
+
+  /* [Gemini Edit] Taller slider for easier touch */
+  input[type=range]{-webkit-appearance:none; appearance:none; width:100%; height:14px; border-radius:999px; background:#eef2f7}
+  /* [Gemini Edit] Larger thumb for easier touch */
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%; background:var(--accent); border:2px solid #fff; box-shadow:0 1px 0 #0001; cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%; background:var(--accent); border:2px solid #fff; cursor:pointer}
+
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand"><div class="logo"></div><h1>ACOFUSION · Interactive Lighting Layer Demo (7-Layer Version)</h1></div>
+    <div class="toolbar">
+      <label class="sub">Blend Mode
+        <select id="blend">
+          <option value="screen" selected>Screen</option>
+          <option value="normal">Normal</option>
+          <option value="lighten">Lighten</option>
+          <option value="plus-lighter">Plus Lighter</option>
+        </select>
+      </label>
+      <button class="btn" id="reset">Reset</button>
+    </div>
+  </header>
+
+  <div class="stage-wrap" id="wrap">
+    <div class="errorbar" id="err"></div>
+    <div class="loading" id="loading">Loading images…</div>
+    <div class="stage">
+      <!-- Ensure these image files are in the same folder as the .html file -->
+      <img class="base"  id="img-base"      src="base.jpg" alt="Base Layer"/>
+      <img class="layer" id="img-l01-accent"  src="L01_Accent.jpg"  alt="L01 - Plant Spotlight"/>
+      <img class="layer" id="img-l02-faint"   src="L02_Faint_Ambient.jpg" alt="L02 - Faint Ambient"/>
+      <img class="layer" id="img-l03-strip"   src="L03_Bar_Strip.jpg" alt="L03 - Bar Strip Light"/>
+      <img class="layer" id="img-l04-floor"   src="L04_Floor_Wash.jpg" alt="L04 - Right Floor Wash"/>
+      <img class="layer" id="img-l05-back"    src="L05_Back_Room.jpg" alt="L05 - Back Shelves"/>
+      <img class="layer" id="img-l06-pendant" src="L06_Pendants.jpg" alt="L06 - Bar Pendants"/>
+      <img class="layer" id="img-l07-wall"    src="L07_Main_Wall.jpg" alt="L07 - Left Main Wall"/>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="head">
+      <div class="sub">Drag the sliders to blend the light layers.</div>
+    </div>
+    <div class="grid">
+      <div class="group"><label>L01 - Plant Spotlight <span class="pill" id="v-l01-accent">50%</span></label>
+        <input type="range" id="s-l01-accent" min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L02 - Faint Ambient <span class="pill" id="v-l02-faint">50%</span></label>
+        <input type="range" id="s-l02-faint"  min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L03 - Bar Strip Light <span class="pill" id="v-l03-strip">50%</span></label>
+        <input type="range" id="s-l03-strip"  min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L04 - Right Floor Wash <span class="pill" id="v-l04-floor">50%</span></label>
+        <input type="range" id="s-l04-floor"  min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L05 - Back Shelves <span class="pill" id="v-l05-back">50%</span></label>
+        <input type="range" id="s-l05-back"   min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L06 - Bar Pendants <span class="pill" id="v-l06-pendant">50%</span></label>
+        <input type="range" id="s-l06-pendant" min="0" max="100" step="1" value="50"/></div>
+      <div class="group"><label>L07 - Left Main Wall <span class="pill" id="v-l07-wall">50%</span></label>
+        <input type="range" id="s-l07-wall"    min="0" max="100" step="1" value="50"/></div>
+    </div>
+    </section>
+
+  <details class="align" style="width:min(1200px,96vw); padding: 10px;">
+    <summary>Alignment Lab — Manual offset/scale adjustment & DIFF View</summary>
+    <div class="align-body" style="background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-top: 8px;">
+      <label class="mini" style="display: flex; align-items: center; gap: 6px;">
+        <input type="checkbox" id="diff"> Enable DIFF (Difference) Blend Mode (for debugging)
+      </label>
+      <div class="align-grid" id="alignGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 10px;"></div>
+      <div class="sub" style="margin-top:6px; font-size: 12px;">
+        Hint: In DIFF mode, bright edges mean misalignment. Adjust until the screen is almost "all black" for perfect alignment.
+      </div>
+    </div>
+  </details>
+
+<script>
+(function(){
+  const $ = (s)=>document.querySelector(s);
+  const wrap = $('#wrap'), err=$('#err'), loading=$('#loading');
+
+  // Define 7 layers
+  const EL = {
+    base:     $('#img-base'),
+    l01:      $('#img-l01-accent'),
+    l02:      $('#img-l02-faint'),
+    l03:      $('#img-l03-strip'),
+    l04:      $('#img-l04-floor'),
+    l05:      $('#img-l05-back'),
+    l06:      $('#img-l06-pendant'),
+    l07:      $('#img-l07-wall')
+  };
+
+  // Define 7 sliders
+  const sliders = {
+    l01:      $('#s-l01-accent'),
+    l02:      $('#s-l02-faint'),
+    l03:      $('#s-l03-strip'),
+    l04:      $('#s-l04-floor'),
+    l05:      $('#s-l05-back'),
+    l06:      $('#s-l06-pendant'),
+    l07:      $('#s-l07-wall')
+  };
+  
+  // Define 7 value pills
+  const pills = {
+    l01:      $('#v-l01-accent'),
+    l02:      $('#v-l02-faint'),
+    l03:      $('#v-l03-strip'),
+    l04:      $('#v-l04-floor'),
+    l05:      $('#v-l05-back'),
+    l06:      $('#v-l06-pendant'),
+    l07:      $('#v-l07-wall')
+  };
+
+  // Define 8 files to preload
+  const files=[
+    'base.jpg',
+    'L01_Accent.jpg',
+    'L02_Faint_Ambient.jpg',
+    'L03_Bar_Strip.jpg',
+    'L04_Floor_Wash.jpg',
+    'L05_Back_Room.jpg',
+    'L06_Pendants.jpg',
+    'L07_Main_Wall.jpg'
+  ];
+  
+  Promise.all(files.map(src=>new Promise(res=>{
+    const i=new Image(); i.onload=()=>res({src,w:i.naturalWidth,h:i.naturalHeight,ok:true});
+    i.onerror=()=>res({src,ok:false}); i.src=src;
+  }))).then(arr=>{
+    loading && loading.remove();
+    const missing=arr.filter(x=>!x.ok).map(x=>x.src);
+    let msg='';
+    if(missing.length) msg+='Missing files: '+missing.join(', ')+' . ';
+    const ok=arr.filter(x=>x.ok);
+    if(ok.length){
+      const baseInfo = arr.find(x=>x.src.includes('base')) || ok[0];
+      if (baseInfo && baseInfo.w && baseInfo.h){
+        // Ensure the image container has the correct aspect ratio
+        wrap.style.aspectRatio = baseInfo.w + ' / ' + baseInfo.h;
+      }
+      const w0=ok[0].w,h0=ok[0].h;
+      const mismatch=ok.some(x=>x.w!==w0||x.h!==h0);
+      
+      // [Gemini Edit] Temporarily hide the size mismatch error for testing
+      // if(mismatch) msg+='Image dimensions do not match. Please ensure all layers have the same pixel dimensions.';
+    }
+    if(msg){ err.textContent=msg; err.style.display='block'; }
+  });
+
+  // Blend mode
+  $('#blend').addEventListener('change', e=>{
+    document.querySelectorAll('.layer').forEach(el=> el.style.mixBlendMode = e.target.value);
+  });
+  $('#blend').dispatchEvent(new Event('change'));
+
+  // Link 7 sliders
+  const set = (el, s, pill)=>{ const v = Number(s.value)/100; el.style.opacity = v; pill.textContent = Math.round(v*100)+'%'; };
+  ['input','change'].forEach(evt=>{
+    sliders.l01.addEventListener(evt, ()=>set(EL.l01,sliders.l01,pills.l01));
+    sliders.l02.addEventListener(evt, ()=>set(EL.l02,sliders.l02,pills.l02));
+    sliders.l03.addEventListener(evt, ()=>set(EL.l03,sliders.l03,pills.l03));
+    sliders.l04.addEventListener(evt, ()=>set(EL.l04,sliders.l04,pills.l04));
+    sliders.l05.addEventListener(evt, ()=>set(EL.l05,sliders.l05,pills.l05));
+    sliders.l06.addEventListener(evt, ()=>set(EL.l06,sliders.l06,pills.l06));
+    sliders.l07.addEventListener(evt, ()=>set(EL.l07,sliders.l07,pills.l07));
+  });
+  // Trigger once to apply default values
+  Object.values(sliders).forEach(s=>s.dispatchEvent(new Event('input')));
+
+  // Reset button resets 7 sliders
+  $('#reset').addEventListener('click', ()=>{
+    Object.values(sliders).forEach(s => s.value = 50); // Set all to 50
+    Object.values(sliders).forEach(s=>s.dispatchEvent(new Event('input')));
+  });
+
+  /* Alignment Lab supports 7 layers */
+  const alignList = [
+    {id:'img-l01-accent', name:'L01 - Plant Spotlight'},
+    {id:'img-l02-faint', name:'L02 - Faint Ambient'},
+    {id:'img-l03-strip', name:'L03 - Bar Strip Light'},
+    {id:'img-l04-floor', name:'L04 - Right Floor Wash'},
+    {id:'img-l05-back', name:'L05 - Back Shelves'},
+    {id:'img-l06-pendant', name:'L06 - Bar Pendants'},
+    {id:'img-l07-wall', name:'L07 - Left Main Wall'}
+  ];
+  const host = document.getElementById('alignGrid');
+  alignList.forEach(L=>{
+    const row = document.createElement('div');
+    row.style.border = '1px solid var(--line)';
+    row.style.borderRadius = '12px';
+    row.style.padding = '10px';
+    row.style.background = '#fcfcfc';
+    row.innerHTML = `
+      <div style="font-weight:600;margin-bottom:6px; font-size: 13px;">${L.name}</div>
+      <div class="mini" style="font-size:12px; color: #555;">X (Horizontal) <input type="range" min="-80" max="80" value="0" step="1" data-k="x" data-id="${L.id}"></div>
+      <div class="mini" style="font-size:12px; color: #555;">Y (Vertical) <input type="range" min="-80" max="80" value="0" step="1" data-k="y" data-id="${L.id}"></div>
+      <div class="mini" style="font-size:12px; color: #555;">Scale <input type="range" min="95" max="105" value="100" step="0.1" data-k="s" data-id="${L.id}"></div>
+    `;
+    host.appendChild(row);
+  });
+  function applyAlign(){
+    document.querySelectorAll('#alignGrid input').forEach(inp=>{
+      const id=inp.dataset.id, k=inp.dataset.k, v=Number(inp.value);
+      const el=document.getElementById(id);
+      if (!el) return;
+      const st=el._adj||{x:0,y:0,s:100}; st[k]=v; el._adj=st;
+      el.style.transformOrigin='center center';
+      el.style.transform = `translate(${st.x}px, ${st.y}px) scale(${st.s/100})`;
+    });
+  }
+  host.addEventListener('input', applyAlign); applyAlign();
+
+  // DIFF debug
+  const diff = document.getElementById('diff');
+  diff.addEventListener('change', (e)=>{
+    const mode = e.target.checked ? 'difference' : document.getElementById('blend').value || 'screen';
+    document.querySelectorAll('.layer').forEach(el=> el.style.mixBlendMode = mode);
+  });
+})();
+</script>
+</body>
+</html>
+
